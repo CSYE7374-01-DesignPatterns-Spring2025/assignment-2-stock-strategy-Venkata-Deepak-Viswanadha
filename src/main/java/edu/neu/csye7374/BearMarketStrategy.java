@@ -5,4 +5,9 @@ class BearMarketStrategy implements MarketStrategy {
     public double calculatePrice(double currentPrice, double factor) {
         return currentPrice * (1 - factor);
     }
+
+    @Override
+    public String toString() {
+        return "BearMarketStrategy";
+    }
 }

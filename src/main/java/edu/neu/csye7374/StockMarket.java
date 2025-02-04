@@ -38,14 +38,15 @@ public class StockMarket {
         }
     }
 
-    public void placeBids() {
-        System.out.println("\nPlacing Bids:");
+    public void placeBidsWithStrategies(MarketStrategy strategy) {
+        System.out.println("\nPlacing Bids with Strategies:");
 
         String[] ibmBids = {"120.50", "135.75", "128.90", "140.25", "133.80", "145.00"};
         String[] googleBids = {"210.50", "220.75", "215.90", "225.25", "230.80", "240.00"};
         String[] microsoftBids = {"355.50", "360.75", "358.90", "365.25", "370.80", "375.00"};
 
         for (Stock stock : stocks) {
+            stock.setMarketStrategy(strategy);
             System.out.println("\n========== Bidding for " + stock.getName() + " ==========");
 
             String[] bids;
@@ -59,7 +60,8 @@ public class StockMarket {
 
             for (String bid : bids) {
                 stock.setBid(bid);
-                System.out.println("Placed bid: " + bid);
+                stock.applyStrategy();
+                System.out.println("Placed bid and applied strategy: " + bid + " "+ strategy );
                 System.out.println(stock);
                 System.out.println("Performance Metric: " + stock.getMetric());
                 System.out.println("--------------------------------");
@@ -104,25 +106,16 @@ public class StockMarket {
         System.out.println("\nInitial Stock Market State:");
         market.showAllStocks();
 
-        // Apply Bids
-        market.placeBids();
-
-        // Apply Bull Market Strategy to all stocks
-        System.out.println("\nApplying Bull Market Strategy:");
+        // Apply Bids with Bull Market Strategy
+        System.out.println("\nApplying Bull Market Strategy with Bids:");
         MarketStrategy bullStrategy = new BullMarketStrategy();
-        for (Stock stock : market.stocks) {
-            stock.setMarketStrategy(bullStrategy);
-            stock.applyStrategy();
-        }
+        market.placeBidsWithStrategies(bullStrategy);
         market.showAllStocks();
 
-        // Apply Bear Market Strategy to all stocks
-        System.out.println("\nApplying Bear Market Strategy:");
+        // Apply Bids with Bear Market Strategy
+        System.out.println("\nApplying Bear Market Strategy with Bids:");
         MarketStrategy bearStrategy = new BearMarketStrategy();
-        for (Stock stock : market.stocks) {
-            stock.setMarketStrategy(bearStrategy);
-            stock.applyStrategy();
-        }
+        market.placeBidsWithStrategies(bearStrategy);
         market.showAllStocks();
 
         System.out.println("\n========== Demo Complete ==========\n");
